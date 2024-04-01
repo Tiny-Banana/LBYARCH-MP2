@@ -19,7 +19,7 @@ The program includes a sanity check to verify the correctness of both the C and 
 |----------|----------|
 | ![image](https://github.com/Tiny-Banana/LBYARCH-MP2/assets/89186133/f90baee2-d5f4-42e7-b86c-32b348068365) | ![image](https://github.com/Tiny-Banana/LBYARCH-MP2/assets/89186133/f9b192ab-b1c8-4d53-aedc-d67029df4252)|
 
-The x86-64 and C kernels demonstrate average execution times of 0.017967 seconds and 0.037467 seconds, respectively, in debug mode. In release mode, the execution times are 0.017467 seconds for x86-64 and 0.006600 seconds for C.
+The x86-64 and C kernels demonstrate average execution times of *0.017967* seconds and *0.037467 seconds*, respectively, in debug mode. In release mode, the execution times are *0.017467 seconds* for x86-64 and *0.006600 seconds* for C.
 
 
 ### Input size 2<sup>24</sup>
@@ -27,14 +27,14 @@ The x86-64 and C kernels demonstrate average execution times of 0.017967 seconds
 |----------|----------|
 | ![image](https://github.com/Tiny-Banana/LBYARCH-MP2/assets/89186133/445c9f41-759a-4a5d-8777-d4061f0f6b48)| ![image](https://github.com/Tiny-Banana/LBYARCH-MP2/assets/89186133/b5fd1846-68c3-4de2-a039-f870ff98228c)|
 
-The x86-64 and C kernels demonstrate average execution times of 0.290933 seconds and 0.685533 seconds, respectively, in debug mode. In release mode, the execution times are 0.283967 seconds for x86-64 and  0.111433 seconds for C.
+The x86-64 and C kernels demonstrate average execution times of *0.290933 seconds* and *0.685533 seconds*, respectively, in debug mode. In release mode, the execution times are *0.283967 seconds* for x86-64 and  *0.111433* seconds for C.
 
 ### Input size 2<sup>28</sup>
 | Debug Mode | Release Mode |
 |----------|----------|
 |![image](https://github.com/Tiny-Banana/LBYARCH-MP2/assets/89186133/eb1596a0-ff55-481c-82b0-e120eff47f44) |![image](https://github.com/Tiny-Banana/LBYARCH-MP2/assets/89186133/25496553-83cc-49bf-9a36-e78d12e4e5c4)|
 
-The x86-64 and C kernels demonstrate average execution times of 6.144167 seconds and 17.325333 seconds, respectively, in debug mode. In release mode, the execution times are 20.930033 seconds for x86-64 and  4.449600 seconds for C.
+The x86-64 and C kernels demonstrate average execution times of *6.144167 seconds* and *17.325333 seconds*, respectively, in debug mode. In release mode, the execution times are *20.930033 seconds* for x86-64 and  *4.449600 seconds* for C.
 
 ### Comparison
 Based on the analysis, there's a significant difference in execution times between debug and release modes. Debug mode tends to have considerably longer execution times, which is expected due to the additional debugging information and enabled optimizations. In debugging mode, the x86-64 kernel consistently outperforms the C kernel across all input sizes. However, in release mode, the situation reverses, with the C kernel surpassing the x86-64 kernel in performance, which can be attributed to optimization features inherent in C when operating in release mode.
