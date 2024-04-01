@@ -19,7 +19,7 @@ stencilComputation:
 
 	lea r14, [rcx]							;pointer to X
 	lea r15, [rdx]							;pointer to Y
-	mov r10, r8							    ;size of array
+	mov r10, r8							    ;stencil loop
 	mov r11, 0								;counter of stencil loop
 	movsd xmm0, [stencilSumSet]				;stencil window sum
 
