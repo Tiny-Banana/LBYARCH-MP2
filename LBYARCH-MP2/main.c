@@ -6,18 +6,24 @@
 extern void stencilComputation(double* X, double* Y, int sizeOfArray);
 void stencilComputationC(double* X, double* Y, int sizeOfY);
 void prompt(int* sizeOfArray);
-void printY(double* Y, int size);
+int sanityCheckPass(double* Y_Asm, double* Y_C, int size);
 
 int main() {
 	int sizeOfArray;
-	
 	prompt(&sizeOfArray);
-	
 	int sizeOfY = sizeOfArray - 6;
 	double* X = malloc(sizeOfArray * sizeof(double));
 	double* Y = malloc(sizeOfY * sizeof(double));
 	double* X_C = malloc(sizeOfArray * sizeof(double));
 	double* Y_C = malloc(sizeOfY * sizeof(double));
+	int sanityCheck;
+	int yPrintLimit = 10;
+	int test = 30;
+	double cTime[30];
+	double asmTime[30];
+
+	
+
 
 	if (X == NULL || Y == NULL) {
 		printf("Memory not allocated.\n");
@@ -39,14 +45,22 @@ int main() {
 		X_C[j] = X[j];
 	}
 
+	//run asm and C functions once
+	printf("Running C and Asm functions once...\nPrinting the first 10 elements of vector Y...\n");
 	stencilComputation(X, Y, sizeOfArray);
 	stencilComputationC(X_C, Y_C, sizeOfY);
 	
-	printf("asm:\n");
-	printY(Y, sizeOfY);
+	sanityCheck = sanityCheckPass(Y, Y_C, sizeOfY);
 
-	printf("C:\n");
-	printY(Y_C, sizeOfY);
+	if (!sanityCheck) {
+		printf("Return values from Assembly and C functions don't match.");
+		free(X);
+		free(Y);
+		exit(0);
+	}
+	else {
+		printf("Sanity Checked passed!\nProceeding to testing.");
+	}
 
 	return 0;
 }
@@ -76,8 +90,16 @@ void stencilComputationC(double* X, double* Y, int iteration) {
 	}
 }
 
-void printY(double* Y, int size) {
+int sanityCheckPass(double* Y_Asm, double* Y_C, int size) {
 	for (int i = 0; i < size; i++) {
-		printf("%lf\n", Y[i]);
+		if (Y_Asm[i] != Y_C[i]) {
+			return 0;
+		}
+		//print first 10 values
+		if (i < 10) {
+			printf("Y_Asm[%d] = %lf\n", i, Y_Asm[i]);
+			printf("Y_C[%d] = %lf\n", i, Y_C[i]);
+		}
 	}
+	return 1;
 }
