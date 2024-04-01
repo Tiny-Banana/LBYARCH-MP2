@@ -23,6 +23,8 @@ int main() {
 	int testRun = 30;
 	double asmTime[30];
 	double cTime[30];
+	clock_t start;
+	clock_t end;
 
 	if (X == NULL || Y == NULL) {
 		printf("Memory not allocated.\n");
@@ -45,7 +47,7 @@ int main() {
 	}
 
 	//run asm and C functions once
-	printf("Running C and Asm functions once...\nPrinting the first 10 elements of vector Y...\n");
+	printf("Running C and Asm functions once...\nPrinting the first 10 elements of vector Y for correctness check...\n\n");
 	stencilComputation(X, Y, sizeOfY);
 	stencilComputationC(X_C, Y_C, sizeOfY);
 
@@ -58,22 +60,22 @@ int main() {
 		exit(0);
 	}
 	else {
-		printf("Sanity check passed!\nProceeding to testing.\n");
+		printf("Sanity check passed!\n\nProceeding to testing.\n");
 	}
 
 	printf("Running Asm function 30 times...\n");
 	for (int i = 0; i < testRun; i++) {
-		clock_t start = clock();
+		start = clock();
 		stencilComputation(X, Y, sizeOfY);
-		clock_t end = clock();
+		end = clock();
 		asmTime[i] = (double)(end - start) / CLOCKS_PER_SEC;
 	}
 
 	printf("Running C function 30 times...\n");
 	for (int i = 0; i < testRun; i++) {
-		clock_t start = clock();
+		start = clock();
 		stencilComputationC(X_C, Y_C, sizeOfY);
-		clock_t end = clock();
+		end = clock();
 		cTime[i] = (double)(end - start) / CLOCKS_PER_SEC;
 	}
 
@@ -115,8 +117,8 @@ int sanityCheckPass(double* Y_Asm, double* Y_C, int size) {
 		}
 		//print first 10 values
 		if (i < 10) {
-			printf("Y_Asm[%d] = %lf\n", i, Y_Asm[i]);
-			printf("Y_C[%d] = %lf\n", i, Y_C[i]);
+			printf("Y[%d] in x86-64 implementation: %lf\n", i, Y_Asm[i]);
+			printf("Y[%d] in C implementation:      %lf\n", i, Y_C[i]);
 		}
 	}
 	return 1;
