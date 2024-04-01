@@ -58,7 +58,7 @@ int main() {
 		exit(0);
 	}
 	else {
-		printf("Sanity Checked passed!\nProceeding to testing.\n");
+		printf("Sanity check passed!\nProceeding to testing.\n");
 	}
 
 	printf("Running Asm function 30 times...\n");
