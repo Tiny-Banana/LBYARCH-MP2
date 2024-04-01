@@ -7,7 +7,7 @@ This project aims to investigate the performance difference between x86-64 assem
 The program requires an integer scalar variable,  _n_, denoting the length of the vectors. Both vectors _X_  and _Y_  are of double-precision float type. It is important to note that the program restricts the value of _n_ to be greater than or equal to 8, due to the nature of the operation. Additionally, for the program's purpose, vector _X_  is initialized to contain values ranging from 0 to n-1.
 
 ## Algorithm implementation
-The algorithm is basically a moving window sum with the window size of 7. This involves iterating over vector _X _ n-6 times, shifting the window one position to the right with each iteration to generate the sequence to be stored in vector _Y_ .
+The algorithm is basically a moving window sum with the window size of 7. This involves iterating over vector _X_ n-6 times, shifting the window one position to the right with each iteration to generate the sequence to be stored in vector _Y_ .
 
 ## Sanity Check
 ![image](https://github.com/Tiny-Banana/LBYARCH-MP2/assets/89186133/ecf851c6-4d30-4211-8f8c-5836ee8e3136)
