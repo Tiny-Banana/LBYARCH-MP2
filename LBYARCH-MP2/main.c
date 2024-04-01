@@ -3,10 +3,12 @@
 #include <math.h>
 #include <time.h>
 
-extern void stencilComputation(double* X, double* Y, int sizeOfArray);
+extern void stencilComputation(double* X, double* Y, int sizeOfY);
 void stencilComputationC(double* X, double* Y, int sizeOfY);
 void prompt(int* sizeOfArray);
 int sanityCheckPass(double* Y_Asm, double* Y_C, int size);
+void generateCsv(const double asmTime[], const double cTime[], int testRun, int size);
+double getAverage(double* times, int size);
 
 int main() {
 	int sizeOfArray;
@@ -18,12 +20,9 @@ int main() {
 	double* Y_C = malloc(sizeOfY * sizeof(double));
 	int sanityCheck;
 	int yPrintLimit = 10;
-	int test = 30;
-	double cTime[30];
+	int testRun = 30;
 	double asmTime[30];
-
-	
-
+	double cTime[30];
 
 	if (X == NULL || Y == NULL) {
 		printf("Memory not allocated.\n");
@@ -32,24 +31,24 @@ int main() {
 		exit(0);
 	}
 	else {
-		 //Memory has been successfully allocated
+		//Memory has been successfully allocated
 		printf("Memory successfully allocated using malloc.\n");
 	}
 
-	//populate
+	//populate the array
 	for (int i = 0; i < sizeOfArray; i++) {
 		X[i] = i;
 	}
-	
+
 	for (int j = 0; j < sizeOfArray; j++) {
 		X_C[j] = X[j];
 	}
 
 	//run asm and C functions once
 	printf("Running C and Asm functions once...\nPrinting the first 10 elements of vector Y...\n");
-	stencilComputation(X, Y, sizeOfArray);
+	stencilComputation(X, Y, sizeOfY);
 	stencilComputationC(X_C, Y_C, sizeOfY);
-	
+
 	sanityCheck = sanityCheckPass(Y, Y_C, sizeOfY);
 
 	if (!sanityCheck) {
@@ -59,8 +58,27 @@ int main() {
 		exit(0);
 	}
 	else {
-		printf("Sanity Checked passed!\nProceeding to testing.");
+		printf("Sanity Checked passed!\nProceeding to testing.\n");
 	}
+
+	printf("Running Asm function 30 times...\n");
+	for (int i = 0; i < testRun; i++) {
+		clock_t start = clock();
+		stencilComputation(X, Y, sizeOfY);
+		clock_t end = clock();
+		asmTime[i] = (double)(end - start) / CLOCKS_PER_SEC;
+	}
+
+	printf("Running C function 30 times...\n");
+	for (int i = 0; i < testRun; i++) {
+		clock_t start = clock();
+		stencilComputationC(X_C, Y_C, sizeOfY);
+		clock_t end = clock();
+		cTime[i] = (double)(end - start) / CLOCKS_PER_SEC;
+	}
+
+	printf("Saving results to a CSV file...\n");
+	generateCsv(asmTime, cTime, testRun, sizeOfArray);
 
 	return 0;
 }
@@ -102,4 +120,39 @@ int sanityCheckPass(double* Y_Asm, double* Y_C, int size) {
 		}
 	}
 	return 1;
+}
+
+double getAverage(double* times, int size) {
+	double sum = 0.0;
+	for (int i = 0; i < size; i++) {
+		sum += times[i];
+	}
+	return sum / size;
+
+}
+
+void generateCsv(const double asmTime[], const double cTime[], int testRun, int size) {
+	FILE* file = fopen("result.csv", "w");
+	if (file == NULL) {
+		perror("Error opening file");
+		return;
+	}
+
+	fprintf(file, "Vector Size,Iteration,Assembly Time (s), C Time (s)\n");
+
+	for (int i = 0; i < testRun; ++i) {
+		if (i == 0) {
+			fprintf(file, "%d,", size);
+		}
+		else {
+			fprintf(file, ",");
+		}
+		fprintf(file, "%d,%f,%f\n", i + 1, asmTime[i], cTime[i]);
+	}
+
+	double asmAverage = getAverage(asmTime, testRun);
+	double cAverage = getAverage(cTime, testRun);
+	fprintf(file, "\n, , Average Time (s): %f, Average Time (s): %f\n", asmAverage, cAverage);
+
+	fclose(file);
 }
