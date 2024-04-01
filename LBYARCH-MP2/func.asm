@@ -8,23 +8,31 @@ default rel
 global stencilComputation
 
 stencilComputation:
-	lea rsi, [rcx]							;pointer to X
-	lea rdi, [rdx]							;pointer to Y
+	push rsi
+    push rbx
+	push r14
+	push r15
+	push rbp 
+    mov rbp, rsp
+    add rbp, 16
+    add rbp, 32 
+
+	lea r14, [rcx]							;pointer to X
+	lea r15, [rdx]							;pointer to Y
 	mov r10, r8							    ;size of array
-	sub r10, 6								;loop of stencil
 	mov r11, 0								;counter of stencil loop
 	movsd xmm0, [stencilSumSet]				;stencil window sum
 
 initialize:
 	mov rcx, 7
 loopX:
-	movsd xmm1, [rsi]
+	movsd xmm1, [r14]
 	addsd xmm0, xmm1
-	add rsi, 8
+	add r14, 8
 	loop loopX
 
-	movsd [rdi], xmm0	;write to Y
-	add rdi, 8 			;inc pointer to Y
+	movsd [r15], xmm0	;write to Y
+	add r15, 8 			;inc pointer to Y
 
 	inc r11
 	cmp r10, r11
@@ -33,11 +41,16 @@ loopX:
 	mov rcx, 6
 
 resetLoopX:
-	sub rsi, 8
+	sub r14, 8
 	loop resetLoopX
 	movsd xmm0, [stencilSumSet] ;reset stencil window sum
 	jmp initialize
 	
 tapos:
+	 pop rbp
+     pop r14
+     pop r15
+     pop rbx
+     pop rsi
 
 ret 
