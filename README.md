@@ -11,7 +11,7 @@ The algorithm is basically a moving window sum with the window size of 7. This i
 
 ## Sanity Check
 ![image](https://github.com/Tiny-Banana/LBYARCH-MP2/assets/89186133/ecf851c6-4d30-4211-8f8c-5836ee8e3136)
-The program includes a sanity check to verify the correctness of both the C and assembly implementations. If the sanity check detects inconsistencies between the outputs of these implementations, signaling a potential error, the program promptly terminates to ensure the reliability of the results.
+The program includes a sanity check to verify the correctness of both the C and assembly kernels. If the sanity check detects inconsistencies between the outputs of these kernels, signaling a potential error, the program promptly terminates to ensure the reliability of the results.
 
 ## Analysis
 ### Input size 2<sup>20</sup>
@@ -37,5 +37,6 @@ The x86-64 and C kernels demonstrate average execution times of 0.290933 seconds
 The x86-64 and C kernels demonstrate average execution times of 6.144167 seconds and 17.325333 seconds, respectively, in debug mode. In release mode, the execution times are 20.930033 seconds for x86-64 and  4.449600 seconds for C.
 
 ### Comparison
+Based on the analysis, there's a significant difference in execution times between debug and release modes. Debug mode tends to have considerably longer execution times, which is expected due to the additional debugging information and enabled optimizations. In debugging mode, the x86-64 kernel consistently outperforms the C kernel across all input sizes. However, in release mode, the situation reverses, with the C kernel surpassing the x86-64 kernel in performance, which can be attributed to optimization features inherent in C when operating in release mode.
 
-
+In conclusion, in situations where maximum performance is critical and fine-grained control over hardware resources is required, assembly language can be more suitable, for it allows developers to optimize code at the instruction level, resulting in highly efficient and tailored solutions. However, it's worth noting that modern compilers have made significant advancements in optimization techniques, narrowing the performance gap between assembly language and higher-level languages like C. As demonstrated in the analysis, the release mode results showcase the effectiveness of compiler optimizations in improving the performance of C kernel, sometimes even surpassing that of the x86-64 kernel. Ultimately, the choice between assembly and higher-level languages hinges on a careful consideration of performance requirements, development constraints, and the trade-offs between control and productivity.
